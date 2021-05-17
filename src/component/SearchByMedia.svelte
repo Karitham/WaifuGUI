@@ -25,10 +25,17 @@
   <input
     type="text"
     placeholder="media to search..."
-    bind:value="{search_text}" />
+    bind:value="{search_text}"
+    on:keyup="{(e) => {
+      if (e.key == 'Enter') LookupMedia(search_text);
+    }}" />
   <button on:click="{() => LookupMedia(search_text)}">Search</button>
   {#if media}
-    <button on:click="{() => (media = null)}">x</button>
+    <button
+      on:click="{() => {
+        media = null;
+        search_text = '';
+      }}">x</button>
   {/if}
 </label>
 
