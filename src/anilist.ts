@@ -3,9 +3,15 @@ const CharacterQuery = `query ($term: String) {
     title {
       romaji
     }
-    characters(sort: FAVOURITES_DESC) {
+    characters(sort: FAVOURITES_DESC, perPage: 50) {
       nodes {
         id
+        name {
+          full
+        }
+        image {
+          large
+        }
       }
     }
   }
@@ -51,6 +57,16 @@ export interface Characters {
 
 export interface Node {
   id: number;
+  name: Name;
+  image: Image;
+}
+
+export interface Image {
+  large: string;
+}
+
+export interface Name {
+  full: string;
 }
 
 export interface Title {

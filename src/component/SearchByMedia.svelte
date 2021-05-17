@@ -27,6 +27,9 @@
     placeholder="media to search..."
     bind:value="{search_text}" />
   <button on:click="{() => LookupMedia(search_text)}">Search</button>
+  {#if media}
+    <button on:click="{() => (media = null)}">x</button>
+  {/if}
 </label>
 
 <style>
