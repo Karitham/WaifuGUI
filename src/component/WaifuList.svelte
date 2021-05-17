@@ -21,9 +21,15 @@
     </div>
     {#if ws}
       <div class="container">
-        {#each ws2.splice(0, 100) as w}
+        {#each ws2.splice(0, 105) as w}
           <div class="waifu-card">
-            <h4>{w.Name}</h4>
+            <a
+              href="{'https://anilist.co/character/' + w.ID}"
+              title="view on anilist">
+              <h4>
+                {w.Name}
+              </h4>
+            </a>
             <p>{w.ID}</p>
             <img src="{w.Image}" alt="{w.Name}" />
           </div>
@@ -40,6 +46,10 @@
   h4,
   p {
     margin: 0.5rem;
+  }
+
+  a {
+    color: #eee;
   }
 
   .search-more {
