@@ -2,19 +2,26 @@
   import { Inventory } from "../api";
   import type { Waifu } from "../api";
   import Search from "../component/Search.svelte";
+  import SearchByAnime from "./SearchByMedia.svelte";
 
   export let params: { user: string };
   let ws: Waifu[];
+  let ws2: Waifu[];
 </script>
 
 <div class="wrapper">
   {#await $Inventory.pullInventory(params.user) then waifus}
-    <div class="search-bar">
-      <Search waifus="{waifus}" bind:filtered="{ws}" />
+    <div class="search">
+      <div class="search-prop">
+        <Search waifus="{ws}" bind:filtered="{ws2}" />
+      </div>
+      <div class="search-prop">
+        <SearchByAnime waifus="{waifus}" bind:filtered="{ws}" />
+      </div>
     </div>
     {#if ws}
       <div class="container">
-        {#each ws.splice(0, 100) as w}
+        {#each ws2.splice(0, 100) as w}
           <div class="waifu-card">
             <h4>{w.Name}</h4>
             <p>{w.ID}</p>
@@ -39,10 +46,20 @@
     padding: 2rem;
   }
 
-  .search-bar {
-    position: fixed;
+  .search {
     width: 100%;
     opacity: 98%;
+    background-color: hsl(0, 0%, 19%);
+
+    position: fixed;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .search-prop {
+    width: fit-content;
   }
 
   .wrapper {

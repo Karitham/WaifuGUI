@@ -18,23 +18,15 @@
   }
 </script>
 
-<div class="wrapper">
-  <label>
-    Search
-    <input type="text" placeholder="name" bind:value="{search_text}" />
-  </label>
-</div>
+<label>
+  Name
+  <input
+    type="text"
+    placeholder="name to search..."
+    bind:value="{search_text}" />
+</label>
 
 <style>
-  .wrapper {
-    width: 100%;
-
-    background-color: hsl(0, 0%, 19%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
   label {
     color: #e4634d;
     font-weight: 600;
@@ -43,7 +35,6 @@
 
   input {
     padding: 0.4rem;
-    width: 60ch;
     color: #eee;
     margin: 1rem;
     border-style: none;
