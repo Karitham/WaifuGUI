@@ -1,3 +1,4 @@
+import { pop } from "svelte-spa-router";
 import { writable, Writable } from "svelte/store";
 
 export class User {
@@ -11,13 +12,13 @@ export class User {
 
   public async pullInventory(user: string): Promise<Waifu[]> {
     let resp = await fetch("https://waifubot.kar.wtf/user/" + user);
-    switch (resp.status) {
-      case 200:
-        let payload = (await resp.json()) as User;
-        this.Waifus = payload.Waifus;
-        return this.Waifus;
-      default:
-        alert("could not fetch user");
+    try {
+      let payload = (await resp.json()) as User;
+      this.Waifus = payload.Waifus;
+      return this.Waifus;
+    } catch (e) {
+      alert(e);
+      pop();
     }
   }
 }

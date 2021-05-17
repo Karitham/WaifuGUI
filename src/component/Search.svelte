@@ -36,8 +36,9 @@
   }
 
   label {
-    color: #eee;
+    color: #e4634d;
     font-weight: 600;
+    font-size: 18px;
   }
 
   input {
