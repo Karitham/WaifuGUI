@@ -1,6 +1,6 @@
 # WaifuGUI
 
-[https://go-waifubot.github.io/waifugui/](https://go-waifubot.github.io/waifugui/)
+[https://go-waifubot.github.io/WaifuGUI/](https://go-waifubot.github.io/WaifuGUI/)
 
 A basic front end for the waifubot
 
