@@ -10,7 +10,7 @@
 
 <style>
   main {
-    background-color: #212121;
+    background-color: #202020;
     height: 100%;
   }
 </style>

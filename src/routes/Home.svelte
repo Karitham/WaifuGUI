@@ -27,7 +27,7 @@
     height: 100%;
   }
   .content {
-    background-color: #212121;
+    background-color: #202020;
     color: #eee;
     display: flex;
     flex-direction: column;

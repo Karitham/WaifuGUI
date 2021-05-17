@@ -96,7 +96,7 @@
   }
 
   .wrapper {
-    background-color: #212121;
+    background-color: #202020;
     width: 100%;
     text-align: center;
     color: #eee;
