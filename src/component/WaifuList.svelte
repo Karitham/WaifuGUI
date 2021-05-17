@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { push } from "svelte-spa-router";
   import { Inventory } from "../api";
   import type { Waifu } from "../api";
   import Search from "../component/Search.svelte";
@@ -11,12 +12,21 @@
 
 <div class="wrapper">
   {#await $Inventory.pullInventory(params.user) then waifus}
-    <div class="search">
-      <div class="search-prop">
-        <Search waifus="{ws}" bind:filtered="{ws2}" />
+    <div class="nav">
+      <div class="back-btn pl">
+        <button
+          class="search-prop"
+          on:click="{() => {
+            push('/');
+          }}">Back</button>
       </div>
-      <div class="search-prop">
-        <SearchByAnime waifus="{waifus}" bind:filtered="{ws}" />
+      <div class="search pl">
+        <div class="search-prop">
+          <Search waifus="{ws}" bind:filtered="{ws2}" />
+        </div>
+        <div class="search-prop">
+          <SearchByAnime waifus="{waifus}" bind:filtered="{ws}" />
+        </div>
       </div>
     </div>
     {#if ws}
@@ -52,24 +62,37 @@
     color: #eee;
   }
 
+  .pl {
+    padding: 0 1rem;
+  }
+
   .search-more {
     padding: 2rem;
   }
 
-  .search {
+  button {
+    border: none;
+    background-color: #e4634d;
+    padding: 0.5rem;
+    color: #eee;
+  }
+  .nav {
     width: 100%;
     opacity: 98%;
     background-color: hsl(0, 0%, 19%);
 
     position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 
+  .search {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-  }
-
-  .search-prop {
-    width: fit-content;
+    align-items: center;
   }
 
   .wrapper {

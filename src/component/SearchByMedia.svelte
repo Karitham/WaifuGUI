@@ -8,6 +8,7 @@
   export let search_text = "";
   let media: QueryResponse;
 
+  $: media = search_text != "" ? media : null;
   $: filtered = waifus.filter((w) => {
     if (!media) return true;
     return (
@@ -16,6 +17,7 @@
   });
 
   async function LookupMedia(search: string) {
+    if (search_text.length < 3) return;
     media = await SearchMedia(search);
   }
 </script>
