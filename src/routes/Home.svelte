@@ -3,6 +3,18 @@
   $: user = "";
 </script>
 
+<svelte:head>
+  <meta property="og:type" content="WaifuGUI" />
+  <meta property="og:url" content="https://waifugui.kar.moe/" />
+  <meta
+    property="og:title"
+    content="WaifuGUI | Check out your discord waifus" />
+  <meta
+    property="og:description"
+    content="WaifuGUI allows you to view your collected discord waifus" />
+  <meta property="og:image" content="https://waifugui.kar.moe/favicon.png" />
+</svelte:head>
+
 <main>
   <div class="content">
     <h1>Welcome to WaifuGUI</h1>

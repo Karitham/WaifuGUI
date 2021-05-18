@@ -11,6 +11,20 @@
   let ws2: Waifu[];
 </script>
 
+<svelte:head>
+  <meta property="og:type" content="WaifuGUI" />
+  <meta
+    property="og:url"
+    content="{'https://waifugui.kar.moe/#/list/' + params.user}" />
+  <meta
+    property="og:title"
+    content="{`WaifuGUI | Check out ${params.user}'s list`}" />
+  <meta
+    property="og:description"
+    content="{`View ${params.user}'s list online`}" />
+  <meta property="og:image" content="https://waifugui.kar.moe/favicon.png" />
+</svelte:head>
+
 <main>
   <div class="wrapper">
     {#await $Inventory.pullInventory(params.user) then waifus}
