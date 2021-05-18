@@ -15,6 +15,11 @@ export class User {
     try {
       let payload = (await resp.json()) as User;
       this.Waifus = payload.Waifus;
+      this.Date = payload.Date;
+      this.Quote = payload.Quote;
+      this.ID = payload.ID;
+      this.Favorite = payload.Favorite;
+
       return this.Waifus;
     } catch (e) {
       alert(e);
