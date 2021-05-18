@@ -31,23 +31,39 @@
 
 <style>
   .content {
-    margin: 0.7rem;
-    position: sticky;
-    border-radius: 5px;
-    background-color: #353535;
-    max-width: max-content;
-    padding: 1.7rem;
+    background-color: #2e2e2e;
+    max-width: 16rem;
+    max-height: 3fr;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: min-content;
+    text-align: center;
+    margin: 1rem;
+  }
+
+  a {
+    color: #eee;
+  }
+
+  a,
+  p,
+  h5,
+  h4,
+  h3 {
+    margin: 0.4rem;
   }
 
   .description {
     word-wrap: break-word;
     text-align: center;
   }
-  a {
-    color: #eee;
+
+  .waifu-card {
+    justify-items: auto;
+  }
+
+  img {
+    width: 175px;
+    height: 300px;
+    object-fit: cover;
   }
 </style>

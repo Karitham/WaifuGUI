@@ -26,81 +26,64 @@
 </svelte:head>
 
 <main>
-  <div class="wrapper">
-    {#await $Inventory.pullInventory(params.user) then waifus}
-      <div class="nav" id="nav">
-        <div class="back-btn pl">
-          <button
-            class="search-prop"
-            on:click="{() => {
-              push('/');
-            }}">Back</button>
+  {#await $Inventory.pullInventory(params.user) then waifus}
+    <div class="nav" id="nav">
+      <div class="back-btn pl">
+        <button
+          class="search-prop"
+          on:click="{() => {
+            push('/');
+          }}">Back</button>
+      </div>
+      <div class="search pl">
+        <div class="search-prop">
+          <Search waifus="{ws}" bind:filtered="{ws2}" />
         </div>
-        <div class="search pl">
-          <div class="search-prop">
-            <Search waifus="{ws}" bind:filtered="{ws2}" />
-          </div>
-          <div class="search-prop">
-            <SearchByAnime waifus="{waifus}" bind:filtered="{ws}" />
-          </div>
+        <div class="search-prop">
+          <SearchByAnime waifus="{waifus}" bind:filtered="{ws}" />
         </div>
       </div>
-      <div class="left" id="profile">
-        <Profile />
-      </div>
-      {#if ws}
-        <div id="list">
-          <div class="container">
-            {#each ws2.splice(0, 105) as w}
-              <div class="waifu-card">
-                <a
-                  href="{'https://anilist.co/character/' + w.ID}"
-                  title="view on anilist">
-                  <h4>
-                    {w.Name}
-                  </h4>
-                </a>
-                <p>{w.ID}</p>
-                <img src="{w.Image}" alt="{w.Name}" />
-              </div>
-            {/each}
-          </div>
+    </div>
+    <div class="container-wrapper">
+      <div class="container">
+        <div class="left" id="profile">
+          <Profile />
+        </div>
+        {#if ws}
+          {#each ws2.splice(0, 100) as w}
+            <div class="waifu-card">
+              <a
+                href="{'https://anilist.co/character/' + w.ID}"
+                title="view on anilist">
+                <h4>
+                  {w.Name}
+                </h4>
+              </a>
+              <p>{w.ID}</p>
+              <img src="{w.Image}" alt="{w.Name}" />
+            </div>
+          {/each}
           {#if ws.length > 100}
             <h4 class="search-more">Search to list more...</h4>
           {/if}
-        </div>
-      {/if}
-    {/await}
-  </div>
+        {/if}
+      </div>
+    </div>
+  {/await}
 </main>
 
 <style>
   main {
-    top: 0;
-    padding: 0;
-    margin: 0;
+    color: #eee;
   }
 
-  .wrapper {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-columns: auto auto;
+  .container-wrapper {
+    margin: auto;
   }
 
   #profile {
-    padding-top: 6rem;
-    grid-column: 2;
-    grid-row: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #list {
-    padding-top: 6rem;
-
-    grid-row: 2;
-    grid-column: 1;
+    grid-column: -3 / -1;
+    grid-row: span 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -108,8 +91,6 @@
 
   #nav {
     z-index: 10;
-    grid-column: 1 / span 2;
-    grid-row: 1;
   }
 
   h4,
@@ -126,7 +107,9 @@
   }
 
   .search-more {
-    padding: 2rem;
+    padding: 1.5rem;
+    text-align: center;
+    grid-column: 1 / -1;
   }
 
   button {
@@ -156,46 +139,33 @@
     align-items: center;
   }
 
-  .wrapper {
-    top: 0;
-
-    width: 100%;
-    text-align: center;
-    color: #eee;
-  }
-
   .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 65rem;
+    margin: auto;
+    padding-top: 6rem;
+    max-width: 70rem;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-auto-flow: dense;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(3rem, 1fr));
     gap: 1rem;
-  }
-
-  @media screen and (max-width: 860px) {
-    .container {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  @media screen and (min-width: 1300px) {
-    .container {
-      grid-template-columns: repeat(7, 1fr);
-    }
   }
 
   .waifu-card {
     background-color: hsl(0, 0%, 14%);
+
+    text-align: center;
     border-radius: 3px;
+
     display: flex;
-    align-items: center;
     flex-direction: column;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
   }
 
   img {
-    width: 6rem;
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
     margin: 0.5rem;
   }
 </style>
