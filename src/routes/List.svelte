@@ -5,10 +5,12 @@
   import Search from "../component/Search.svelte";
   import SearchByAnime from "../component/SearchByMedia.svelte";
   import Profile from "../component/Profile.svelte";
-
   export let params: { user: string };
-  let ws: Waifu[];
-  let ws2: Waifu[];
+
+  $: filters = [(_: Waifu) => true, (_: Waifu) => true];
+  $: filter_all = (w: Waifu) => {
+    return filters.map((f) => f(w)).every((v) => v != false);
+  };
 </script>
 
 <svelte:head>
@@ -26,7 +28,7 @@
 </svelte:head>
 
 <main>
-  {#await $Inventory.pullInventory(params.user) then waifus}
+  {#await $Inventory.pullInventory(params.user) then i}
     <div class="nav" id="nav">
       <div class="back-btn pl">
         <button
@@ -37,10 +39,10 @@
       </div>
       <div class="search pl">
         <div class="search-prop">
-          <Search waifus="{ws}" bind:filtered="{ws2}" />
+          <Search bind:filter="{filters[0]}" />
         </div>
         <div class="search-prop">
-          <SearchByAnime waifus="{waifus}" bind:filtered="{ws}" />
+          <SearchByAnime bind:filter="{filters[1]}" />
         </div>
       </div>
     </div>
@@ -49,24 +51,20 @@
         <div class="left" id="profile">
           <Profile />
         </div>
-        {#if ws}
-          {#each ws2.splice(0, 100) as w}
-            <div class="waifu-card">
-              <a
-                href="{'https://anilist.co/character/' + w.ID}"
-                title="view on anilist">
-                <h4>
-                  {w.Name}
-                </h4>
-              </a>
-              <p>{w.ID}</p>
-              <img src="{w.Image}" alt="{w.Name}" />
-            </div>
-          {/each}
-          {#if ws.length > 100}
-            <h4 class="search-more">Search to list more...</h4>
-          {/if}
-        {/if}
+        {#each i.filter((w) => filter_all(w)).splice(0, 200) as w}
+          <div class="waifu-card">
+            <a
+              href="{'https://anilist.co/character/' + w.ID}"
+              title="view on anilist">
+              <h4>
+                {w.Name}
+              </h4>
+            </a>
+            <p>{w.ID}</p>
+            <img src="{w.Image}" alt="{w.Name}" />
+          </div>
+        {/each}
+        <h4 class="search-more">Search to list more...</h4>
       </div>
     </div>
   {/await}
@@ -128,14 +126,15 @@
     position: fixed;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: safe;
     align-items: center;
   }
 
   .search {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
   }
 

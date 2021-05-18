@@ -3,21 +3,20 @@
   import type { Waifu } from "../api";
   import { SearchMedia } from "../anilist";
 
-  export let waifus: Waifu[] = [];
-  export let filtered: Waifu[] = [];
   export let search_text = "";
   let media: QueryResponse;
 
   $: media = search_text != "" ? media : null;
-  $: filtered = waifus.filter((w) => {
+  export let filter: (w: Waifu) => boolean;
+
+  $: filter = (w: Waifu) => {
     if (!media) return true;
-    return (
-      media.data.Media.characters.nodes.filter((i) => i.id == w.ID).length > 0
-    );
-  });
+
+    return media.data.Media.characters.nodes.find((i) => i.id == w.ID) != null;
+  };
 
   async function LookupMedia(search: string) {
-    if (search_text.length < 3) return;
+    if (search_text.length < 2) return;
     media = await SearchMedia(search);
   }
 </script>

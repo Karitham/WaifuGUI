@@ -1,9 +1,13 @@
-const CharacterQuery = `query ($term: String) {
+const CharacterQuery = `query ($term: String, $page: Int) {
   Media(search: $term) {
     title {
       romaji
     }
-    characters(sort: FAVOURITES_DESC, perPage: 50) {
+    characters(sort: FAVOURITES_DESC, perPage: 50, page: $page) {
+      pageInfo {
+        hasNextPage
+        lastPage
+      }
       nodes {
         id
         name {
@@ -17,7 +21,10 @@ const CharacterQuery = `query ($term: String) {
   }
 }`;
 
-export async function SearchMedia(media: string): Promise<QueryResponse> {
+export async function SearchMedia(
+  media: string,
+  page: number = 1
+): Promise<QueryResponse> {
   let resp = await fetch("https://graphql.anilist.co", {
     method: "POST",
     headers: {
@@ -27,15 +34,24 @@ export async function SearchMedia(media: string): Promise<QueryResponse> {
       query: CharacterQuery,
       variables: {
         term: media,
+        page: page,
       },
     }),
   });
-  switch (resp.status) {
-    case 200:
-      return (await resp.json()) as QueryResponse;
-    default:
-      console.error(resp.statusText);
+
+  if (resp.status == 200) {
+    let response = (await resp.json()) as QueryResponse;
+
+    if (response.data.Media.characters.pageInfo.hasNextPage) {
+      let resp2 = await SearchMedia(media, page + 1);
+      response.data.Media.characters.nodes.push(
+        ...resp2.data.Media.characters.nodes
+      );
+    }
+    return response;
   }
+
+  console.error(resp.statusText);
 }
 
 export interface QueryResponse {
@@ -52,6 +68,7 @@ export interface Media {
 }
 
 export interface Characters {
+  pageInfo: PageInfo;
   nodes: Node[];
 }
 
@@ -67,6 +84,11 @@ export interface Image {
 
 export interface Name {
   full: string;
+}
+
+export interface PageInfo {
+  hasNextPage: boolean;
+  lastPage: number;
 }
 
 export interface Title {

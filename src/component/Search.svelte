@@ -1,21 +1,20 @@
 <script lang="ts">
   import type { Waifu } from "../api";
 
-  export let waifus: Waifu[] = [];
-  export let search_text = "";
-  export let filtered: Waifu[] = [];
+  $: search_text = "";
 
-  $: filtered = waifus.filter((w) => filter_text(w, search_text));
+  export let filter: (w: Waifu) => boolean;
+  $: filter = (w: Waifu) => {
+    if (search_text.length < 3) return true;
 
-  function filter_text(row: Waifu, text: string): boolean {
-    if (text.length < 3) return true;
+    let reg = new RegExp(search_text, "i");
 
-    let reg = new RegExp(text, "i");
     return (
-      Object.values(row).filter((v) => reg.exec(v.toString()) != null).length >
-      0
+      Object.values(w).filter((prop) => {
+        return reg.exec(prop.toString()) != null;
+      }).length > 0
     );
-  }
+  };
 </script>
 
 <label>

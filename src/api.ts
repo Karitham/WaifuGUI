@@ -14,11 +14,11 @@ export class User {
     let resp = await fetch("https://waifubot.kar.wtf/user/" + user);
     try {
       let payload = (await resp.json()) as User;
-      this.Waifus = payload.Waifus;
       this.Date = payload.Date;
-      this.Quote = payload.Quote;
-      this.ID = payload.ID;
       this.Favorite = payload.Favorite;
+      this.ID = payload.ID;
+      this.Quote = payload.Quote;
+      this.Waifus = payload.Waifus;
 
       return this.Waifus;
     } catch (e) {
