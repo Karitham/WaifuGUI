@@ -9,4 +9,7 @@
   };
 </script>
 
+<svelte:head>
+  <meta property="og:site_name" content="WaifuGUI" />
+</svelte:head>
 <Router routes="{routes}" />

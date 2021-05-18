@@ -159,7 +159,6 @@
   .wrapper {
     top: 0;
 
-    background-color: #202020;
     width: 100%;
     text-align: center;
     color: #eee;
