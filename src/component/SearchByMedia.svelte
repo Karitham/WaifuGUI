@@ -3,10 +3,14 @@
   import type { Waifu } from "../api";
   import type { Node, QueryResponse } from "../anilist";
 
+  export let anime_waifus: Node[];
   export let search_text = "";
   let media: QueryResponse;
 
   $: media = search_text != "" ? media : null;
+  $: anime_waifus =
+    search_text != "" ? (media ? media.data.Media.characters.nodes : []) : [];
+
   export let filter: (w: Waifu) => boolean;
 
   $: filter = (w: Waifu) => {
@@ -15,12 +19,9 @@
     return media.data.Media.characters.nodes.find((i) => i.id == w.ID) != null;
   };
 
-  export let anime_waifus: Node[];
-
   async function LookupMedia(search: string) {
     if (search_text.length < 2) return;
     media = await SearchMedia(search);
-    anime_waifus = media.data.Media.characters.nodes;
   }
 </script>
 
