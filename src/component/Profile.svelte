@@ -32,12 +32,12 @@
 <style>
   .content {
     background-color: #2e2e2e;
-    max-width: 16rem;
-    max-height: 3fr;
+    height: 100%;
+    width: 100%;
+    border-radius: 3px;
     display: flex;
     flex-direction: column;
     text-align: center;
-    margin: 1rem;
   }
 
   a {

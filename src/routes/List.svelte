@@ -1,16 +1,21 @@
 <script lang="ts">
+  import type { Node } from "../anilist";
   import { push } from "svelte-spa-router";
   import { Inventory } from "../api";
   import type { Waifu } from "../api";
   import Search from "../component/Search.svelte";
   import SearchByAnime from "../component/SearchByMedia.svelte";
   import Profile from "../component/Profile.svelte";
+  import Missing from "../component/Missing.svelte";
+
   export let params: { user: string };
 
   $: filters = [(_: Waifu) => true, (_: Waifu) => true];
   $: filter_all = (w: Waifu) => {
     return filters.map((f) => f(w)).every((v) => v != false);
   };
+
+  let anime_waifus: Node[];
 </script>
 
 <svelte:head>
@@ -42,7 +47,7 @@
           <Search bind:filter="{filters[0]}" />
         </div>
         <div class="search-prop">
-          <SearchByAnime bind:filter="{filters[1]}" />
+          <SearchByAnime bind:filter="{filters[1]}" bind:anime_waifus />
         </div>
       </div>
     </div>
@@ -64,6 +69,7 @@
             <img src="{w.Image}" alt="{w.Name}" />
           </div>
         {/each}
+        <Missing missing="{anime_waifus}" />
         <h4 class="search-more">Search to list more...</h4>
       </div>
     </div>
@@ -81,7 +87,7 @@
 
   #profile {
     grid-column: -3 / -1;
-    grid-row: span 2;
+    grid-row: span 3;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { QueryResponse } from "../anilist";
-  import type { Waifu } from "../api";
   import { SearchMedia } from "../anilist";
+  import type { Waifu } from "../api";
+  import type { Node, QueryResponse } from "../anilist";
 
   export let search_text = "";
   let media: QueryResponse;
@@ -15,9 +15,12 @@
     return media.data.Media.characters.nodes.find((i) => i.id == w.ID) != null;
   };
 
+  export let anime_waifus: Node[];
+
   async function LookupMedia(search: string) {
     if (search_text.length < 2) return;
     media = await SearchMedia(search);
+    anime_waifus = media.data.Media.characters.nodes;
   }
 </script>
 
