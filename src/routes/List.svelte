@@ -178,8 +178,8 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center; /* align horizontal */
-    align-items: center; /* align vertical */
+    justify-content: space-between;
+    align-items: center;
     padding: 0.5rem;
   }
 

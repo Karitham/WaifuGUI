@@ -20,9 +20,7 @@
         href="{'https://anilist.co/character/' + w.id}"
         title="view on anilist">
         <h4>
-          <strike>
-            {w.name.full}
-          </strike>
+          {w.name.full}
         </h4>
       </a>
       <p>{w.id}</p>
@@ -79,7 +77,7 @@
     width: 100%;
     height: 100%;
     z-index: 1;
-    background-color: rgba(56, 56, 56, 0.4);
+    background-color: rgba(56, 56, 56, 0.6);
   }
 
   .overlay-wrapper {
