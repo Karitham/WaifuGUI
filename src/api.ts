@@ -8,8 +8,6 @@ export class User {
   Quote: string;
   Waifus: Waifu[];
 
-  constructor() {}
-
   public async pullInventory(user: string): Promise<Waifu[]> {
     let resp = await fetch("https://waifubot.kar.wtf/user/" + user);
     try {

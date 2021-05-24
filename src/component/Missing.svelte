@@ -1,9 +1,12 @@
 <script lang="ts">
   import type { Node } from "../anilist";
   import { Inventory } from "../api";
+  import type { Waifu } from "../api";
+  import Compare from "./Compare.svelte";
 
   export let missing: Node[] = [];
   let really_missing: Node[] = [];
+  export let CompareChars: Waifu[] = [];
 
   $: really_missing = missing.filter(
     (w) => !$Inventory.Waifus.some((x) => x.ID == w.id)
@@ -23,10 +26,19 @@
         </h4>
       </a>
       <p>{w.id}</p>
-      <div class="overlay-wrapper">
-        <div class="img-overlay"></div>
-        <img src="{w.image.large}" alt="{w.name.full}" />
-      </div>
+      {#if CompareChars}
+        <Compare compare="{CompareChars.some((x) => x.ID === w.id)}">
+          <div class="overlay-wrapper">
+            <div class="img-overlay"></div>
+            <img src="{w.image.large}" alt="{w.name.full}" />
+          </div>
+        </Compare>
+      {:else}
+        <div class="overlay-wrapper">
+          <div class="img-overlay"></div>
+          <img src="{w.image.large}" alt="{w.name.full}" />
+        </div>
+      {/if}
     </div>
   {/each}
 {/if}
@@ -51,6 +63,7 @@
     flex-direction: column;
     justify-content: center; /* align horizontal */
     align-items: center; /* align vertical */
+    padding: 0.5rem;
   }
 
   img {
@@ -65,12 +78,12 @@
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
     background-color: rgba(56, 56, 56, 0.4);
   }
 
   .overlay-wrapper {
     position: relative;
-    margin: 0.5rem;
     width: 100px;
     height: 150px;
   }

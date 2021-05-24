@@ -1,12 +1,14 @@
 <script lang="ts">
   import type { Node } from "../anilist";
   import { push } from "svelte-spa-router";
-  import { Inventory } from "../api";
+  import { Inventory, User } from "../api";
   import type { Waifu } from "../api";
-  import Search from "../component/Search.svelte";
-  import SearchByAnime from "../component/SearchByMedia.svelte";
+  import FilterChar from "../component/FilterChar.svelte";
+  import FilterMedia from "../component/FilterMedia.svelte";
   import Profile from "../component/Profile.svelte";
   import Missing from "../component/Missing.svelte";
+  import Compare from "../component/Compare.svelte";
+  import CompareUser from "../component/CompareUser.svelte";
 
   export let params: { user: string };
 
@@ -15,7 +17,8 @@
     return filters.map((f) => f(w)).every((v) => v != false);
   };
 
-  let anime_waifus: Node[];
+  let media_chars: Node[];
+  let compare_chars: Waifu[] = [];
 </script>
 
 <svelte:head>
@@ -37,17 +40,19 @@
     <div class="nav" id="nav">
       <div class="back-btn pl">
         <button
-          class="search-prop"
           on:click="{() => {
             push('/');
           }}">Back</button>
       </div>
       <div class="search pl">
         <div class="search-prop">
-          <Search bind:filter="{filters[0]}" />
+          <CompareUser bind:CompareChars="{compare_chars}" />
         </div>
         <div class="search-prop">
-          <SearchByAnime bind:filter="{filters[1]}" bind:anime_waifus />
+          <FilterChar bind:filter="{filters[0]}" />
+        </div>
+        <div class="search-prop">
+          <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
         </div>
       </div>
     </div>
@@ -66,10 +71,16 @@
               </h4>
             </a>
             <p>{w.ID}</p>
-            <img src="{w.Image}" alt="{w.Name}" />
+            {#if compare_chars !== undefined}
+              <Compare compare="{compare_chars.some((x) => x.ID === w.ID)}">
+                <img src="{w.Image}" alt="{w.Name}" />
+              </Compare>
+            {:else}
+              <img src="{w.Image}" alt="{w.Name}" />
+            {/if}
           </div>
         {/each}
-        <Missing missing="{anime_waifus}" />
+        <Missing missing="{media_chars}" bind:CompareChars="{compare_chars}" />
         <h4 class="search-more">Search to list more...</h4>
       </div>
     </div>
@@ -114,6 +125,10 @@
     padding: 1.5rem;
     text-align: center;
     grid-column: 1 / -1;
+  }
+
+  .search-prop {
+    padding: 0 1rem;
   }
 
   button {
@@ -165,12 +180,12 @@
     flex-direction: column;
     justify-content: center; /* align horizontal */
     align-items: center; /* align vertical */
+    padding: 0.5rem;
   }
 
   img {
     width: 100px;
     height: 150px;
     object-fit: cover;
-    margin: 0.5rem;
   }
 </style>

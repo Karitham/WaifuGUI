@@ -3,12 +3,12 @@
   import type { Waifu } from "../api";
   import type { Node, QueryResponse } from "../anilist";
 
-  export let anime_waifus: Node[];
+  export let media_chars: Node[];
   export let search_text = "";
   let media: QueryResponse;
 
   $: media = search_text != "" ? media : null;
-  $: anime_waifus =
+  $: media_chars =
     search_text != "" ? (media ? media.data.Media.characters.nodes : []) : [];
 
   export let filter: (w: Waifu) => boolean;
