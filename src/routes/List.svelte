@@ -9,6 +9,7 @@
   import Missing from "../component/Missing.svelte";
   import Compare from "../component/Compare.svelte";
   import CompareUser from "../component/CompareUser.svelte";
+  import DropDown from "../component/DropDown.svelte";
 
   export let params: { user: string };
 
@@ -19,6 +20,9 @@
 
   let media_chars: Node[];
   let compare_chars: Waifu[] = [];
+
+  let dropDown = false;
+  $: dropDown;
 </script>
 
 <svelte:head>
@@ -37,7 +41,24 @@
 
 <main>
   {#await $Inventory.pullInventory(params.user) then i}
-    <div class="nav-container">
+    <div class="nav-container small">
+      <div class="nav" id="nav">
+        <a class="back-btn" href="/"><img src="/favicon.png" alt="icon" /></a>
+        <button on:click="{() => (dropDown = !dropDown)}">v</button>
+        <DropDown showDropDown="{dropDown}">
+          <div class="search-prop-small">
+            <FilterChar bind:filter="{filters[0]}" />
+          </div>
+          <div class="search-prop-small">
+            <CompareUser bind:CompareChars="{compare_chars}" />
+          </div>
+          <div class="search-prop-small">
+            <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
+          </div>
+        </DropDown>
+      </div>
+    </div>
+    <div class="nav-container big">
       <div class="nav" id="nav">
         <a class="back-btn" href="/"><img src="/favicon.png" alt="icon" /></a>
         <div class="search-prop">
@@ -106,6 +127,12 @@
 
   a {
     color: #eee;
+    width: fit-content;
+  }
+
+  .search-prop-small {
+    padding: 0.5rem 0;
+    padding-bottom: 1rem;
   }
 
   .search-more {
@@ -129,14 +156,25 @@
     display: grid;
     grid-template-columns: 0.3fr 1fr 0.7fr 1fr;
     justify-content: center;
+    text-align: center;
     align-items: center;
-    gap: 0.5rem;
+  }
+
+  .nav > button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    background-color: #e4634d;
+    color: #eee;
   }
 
   .container {
     margin: auto;
     padding: 1rem;
-    padding-top: 6rem;
+    padding-top: 5rem;
     max-width: 70rem;
     display: grid;
     grid-auto-flow: dense;
@@ -171,20 +209,31 @@
     border-radius: 100%;
     padding: 0.5rem;
   }
+
   a {
     display: flex;
     justify-content: center;
+  }
+
+  .big {
+    display: block;
+  }
+  .small {
+    display: none;
   }
 
   @media screen and (max-width: 1050px) {
     .nav {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto auto;
-      padding: 1rem;
     }
 
-    .container {
-      padding-top: 13.5rem;
+    .big {
+      display: none;
+    }
+
+    .small {
+      display: block;
     }
   }
 </style>
