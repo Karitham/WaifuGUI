@@ -37,16 +37,18 @@
 
 <main>
   {#await $Inventory.pullInventory(params.user) then i}
-    <div class="nav" id="nav">
-      <a class="back-btn" href="/"><img src="/favicon.png" alt="icon" /></a>
-      <div class="search-prop">
-        <CompareUser bind:CompareChars="{compare_chars}" />
-      </div>
-      <div class="search-prop">
-        <FilterChar bind:filter="{filters[0]}" />
-      </div>
-      <div class="search-prop">
-        <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
+    <div class="nav-container">
+      <div class="nav" id="nav">
+        <a class="back-btn" href="/"><img src="/favicon.png" alt="icon" /></a>
+        <div class="search-prop">
+          <FilterChar bind:filter="{filters[0]}" />
+        </div>
+        <div class="search-prop">
+          <CompareUser bind:CompareChars="{compare_chars}" />
+        </div>
+        <div class="search-prop">
+          <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
+        </div>
       </div>
     </div>
     <div class="container-wrapper">
@@ -112,18 +114,22 @@
     grid-column: 1 / -1;
   }
 
-  .nav {
+  .nav-container {
     top: 0;
     width: 100%;
     opacity: 98%;
-    height: 3.5rem;
+    height: auto;
     background-color: hsl(0, 0%, 19%);
-
     position: fixed;
+  }
+
+  .nav {
+    padding: 0 0.5rem;
     display: grid;
     grid-template-columns: 0.3fr 1fr 0.7fr 1fr;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
   }
 
   .container {
@@ -162,9 +168,22 @@
     width: 2.5rem;
     object-fit: cover;
     border-radius: 100%;
+    padding: 0.5rem;
   }
   a {
     display: flex;
     justify-content: center;
+  }
+
+  @media screen and (max-width: 1050px) {
+    .nav {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      padding: 1rem;
+    }
+
+    .container {
+      padding-top: 13.5rem;
+    }
   }
 </style>

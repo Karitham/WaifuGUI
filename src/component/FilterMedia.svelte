@@ -35,22 +35,22 @@
       if (e.key == 'Enter') LookupMedia(search_text);
     }}" />
   <button on:click="{() => LookupMedia(search_text)}">Search</button>
-  {#if media}
-    <button
-      on:click="{() => {
-        media = null;
-        search_text = '';
-      }}">x</button>
-  {/if}
+
+  <button
+    disabled="{media !== undefined}"
+    on:click="{() => {
+      media = null;
+      search_text = '';
+    }}">x</button>
 </div>
 
 <style>
   .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.2fr 0.1fr;
     align-items: center;
-    margin: 0 1rem;
+    justify-content: flex-start;
+    gap: 0.5rem;
   }
 
   label {
@@ -63,9 +63,7 @@
   input {
     padding: 0.4rem;
     color: #eee;
-    margin: 0 0.5rem;
     border-style: none;
-    width: 100%;
     background-color: #494949;
   }
 
@@ -74,6 +72,9 @@
     background-color: #e4634d;
     padding: 0.5rem;
     color: #eee;
-    margin-left: 0.2rem;
+  }
+
+  button:disabled {
+    background-color: hsl(9, 74%, 75%);
   }
 </style>

@@ -27,11 +27,11 @@
 
 <style>
   .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 0.3fr 2fr;
     align-items: center;
-    margin: 0 1rem;
+    justify-content: flex-start;
+    gap: 0.5rem;
   }
 
   label {
@@ -44,8 +44,6 @@
     padding: 0.4rem;
     color: #eee;
     border-style: none;
-    margin: 0 0.5rem;
-    width: 100%;
     background-color: #494949;
   }
 </style>

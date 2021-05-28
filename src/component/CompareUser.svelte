@@ -15,22 +15,21 @@
   <label for="user"> User </label>
   <input type="text" bind:value="{user}" placeholder="206794847581896705" />
   <button on:click="{() => LookupUser(user)}">Search</button>
-  {#if user}
-    <button
-      on:click="{() => {
-        CompareChars = [];
-        user = '';
-      }}">x</button>
-  {/if}
+  <button
+    disabled="{user !== undefined}"
+    on:click="{() => {
+      CompareChars = [];
+      user = '';
+    }}">x</button>
 </div>
 
 <style>
   .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.2fr 0.1fr;
     align-items: center;
-    margin: 0 1rem;
+    justify-content: flex-start;
+    gap: 0.5rem;
   }
 
   label {
@@ -42,15 +41,17 @@
   input {
     padding: 0.4rem;
     color: #eee;
-    width: 100%;
-    margin: 0 0.5rem;
     border-style: none;
     background-color: #494949;
   }
+
   button {
     border: none;
     background-color: #e4634d;
     padding: 0.5rem;
     color: #eee;
+  }
+  button:disabled {
+    background-color: hsl(9, 74%, 75%);
   }
 </style>
