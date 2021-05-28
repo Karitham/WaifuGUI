@@ -85,11 +85,6 @@
     color: #eee;
   }
 
-  .container-wrapper {
-    display: flex;
-    justify-content: center;
-  }
-
   #profile {
     grid-column: -3 / -1;
     grid-row: span 3;
@@ -132,7 +127,8 @@
   }
 
   .container {
-    margin: 0 1rem;
+    margin: auto;
+    padding: 1rem;
     padding-top: 6rem;
     max-width: 70rem;
     display: grid;
