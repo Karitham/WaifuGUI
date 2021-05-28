@@ -86,7 +86,8 @@
   }
 
   .container-wrapper {
-    margin: auto;
+    display: flex;
+    justify-content: center;
   }
 
   #profile {
@@ -129,11 +130,8 @@
     justify-content: center;
     align-items: center;
   }
-  @media screen and (max-width: 1250px) {
-  }
 
   .container {
-    margin: auto;
     margin: 0 1rem;
     padding-top: 6rem;
     max-width: 70rem;
@@ -145,7 +143,7 @@
   }
 
   .waifu-card {
-    background-color: hsl(0, 0%, 14%);
+    background-color: hsl(0, 0%, 16%);
 
     text-align: center;
     border-radius: 3px;
