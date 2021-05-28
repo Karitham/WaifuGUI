@@ -25,8 +25,8 @@
   }
 </script>
 
-<label>
-  {!media ? "Media" : media.data.Media.title.romaji}
+<div class="container">
+  <label for="media">Media</label>
   <input
     type="text"
     placeholder="media to search..."
@@ -42,26 +42,38 @@
         search_text = '';
       }}">x</button>
   {/if}
-</label>
+</div>
 
 <style>
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0 1rem;
+  }
+
   label {
     color: #e4634d;
     font-weight: 600;
     font-size: 18px;
+    width: max-content;
   }
 
   input {
     padding: 0.4rem;
     color: #eee;
-    margin: 1rem;
+    margin: 0 0.5rem;
     border-style: none;
+    width: 100%;
     background-color: #494949;
   }
+
   button {
     border: none;
     background-color: #e4634d;
     padding: 0.5rem;
     color: #eee;
+    margin-left: 0.2rem;
   }
 </style>

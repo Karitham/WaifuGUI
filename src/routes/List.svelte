@@ -38,22 +38,15 @@
 <main>
   {#await $Inventory.pullInventory(params.user) then i}
     <div class="nav" id="nav">
-      <div class="back-btn pl">
-        <button
-          on:click="{() => {
-            push('/');
-          }}">Back</button>
+      <a class="back-btn" href="/"><img src="/favicon.png" alt="icon" /></a>
+      <div class="search-prop">
+        <CompareUser bind:CompareChars="{compare_chars}" />
       </div>
-      <div class="search pl">
-        <div class="search-prop">
-          <CompareUser bind:CompareChars="{compare_chars}" />
-        </div>
-        <div class="search-prop">
-          <FilterChar bind:filter="{filters[0]}" />
-        </div>
-        <div class="search-prop">
-          <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
-        </div>
+      <div class="search-prop">
+        <FilterChar bind:filter="{filters[0]}" />
+      </div>
+      <div class="search-prop">
+        <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
       </div>
     </div>
     <div class="container-wrapper">
@@ -117,50 +110,31 @@
     color: #eee;
   }
 
-  .pl {
-    padding: 0 1rem;
-  }
-
   .search-more {
     padding: 1.5rem;
     text-align: center;
     grid-column: 1 / -1;
   }
 
-  .search-prop {
-    padding: 0 1rem;
-  }
-
-  button {
-    border: none;
-    background-color: #e4634d;
-    padding: 0.5rem;
-    color: #eee;
-  }
-
   .nav {
     top: 0;
     width: 100%;
     opacity: 98%;
+    height: 3.5rem;
     background-color: hsl(0, 0%, 19%);
 
     position: fixed;
-    display: flex;
-    flex-direction: row;
-    justify-content: safe;
-    align-items: center;
-  }
-
-  .search {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 0.3fr 1fr 0.7fr 1fr;
     justify-content: center;
     align-items: center;
+  }
+  @media screen and (max-width: 1250px) {
   }
 
   .container {
     margin: auto;
+    margin: 0 1rem;
     padding-top: 6rem;
     max-width: 70rem;
     display: grid;
@@ -187,5 +161,16 @@
     width: 100px;
     height: 150px;
     object-fit: cover;
+  }
+
+  a > img {
+    height: 2.5rem;
+    width: 2.5rem;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+  a {
+    display: flex;
+    justify-content: center;
   }
 </style>

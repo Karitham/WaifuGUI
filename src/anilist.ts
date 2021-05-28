@@ -22,13 +22,13 @@ const CharacterQuery = `query ($term: String, $page: Int) {
 }`;
 
 export async function SearchMedia(
-  media: string,
-  page: number = 1
+    media: string,
+    page: number = 1,
 ): Promise<QueryResponse> {
-  let resp = await fetch("https://graphql.anilist.co", {
-    method: "POST",
+  const resp = await fetch('https://graphql.anilist.co', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       query: CharacterQuery,
@@ -40,12 +40,12 @@ export async function SearchMedia(
   });
 
   if (resp.status == 200) {
-    let response = (await resp.json()) as QueryResponse;
+    const response = (await resp.json()) as QueryResponse;
 
     if (response.data.Media.characters.pageInfo.hasNextPage) {
-      let resp2 = await SearchMedia(media, page + 1);
+      const resp2 = await SearchMedia(media, page + 1);
       response.data.Media.characters.nodes.push(
-        ...resp2.data.Media.characters.nodes
+          ...resp2.data.Media.characters.nodes,
       );
     }
     return response;

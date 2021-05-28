@@ -1,5 +1,5 @@
-import { pop } from "svelte-spa-router";
-import { writable, Writable } from "svelte/store";
+import {pop} from 'svelte-spa-router';
+import {writable, Writable} from 'svelte/store';
 
 export class User {
   ID: string;
@@ -9,9 +9,9 @@ export class User {
   Waifus: Waifu[];
 
   public async pullInventory(user: string): Promise<Waifu[]> {
-    let resp = await fetch("https://waifubot.kar.wtf/user/" + user);
+    const resp = await fetch('https://waifubot.kar.wtf/user/' + user);
     try {
-      let payload = (await resp.json()) as User;
+      const payload = (await resp.json()) as User;
       this.Date = payload.Date;
       this.Favorite = payload.Favorite;
       this.ID = payload.ID;

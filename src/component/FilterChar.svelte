@@ -17,15 +17,23 @@
   };
 </script>
 
-<label>
-  Name
+<div class="container">
+  <label for="name"> Name </label>
   <input
     type="text"
     placeholder="name to search..."
     bind:value="{search_text}" />
-</label>
+</div>
 
 <style>
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0 1rem;
+  }
+
   label {
     color: #e4634d;
     font-weight: 600;
@@ -35,8 +43,9 @@
   input {
     padding: 0.4rem;
     color: #eee;
-    margin: 1rem;
     border-style: none;
+    margin: 0 0.5rem;
+    width: 100%;
     background-color: #494949;
   }
 </style>

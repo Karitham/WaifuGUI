@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Inventory } from "../api";
+  import {Inventory} from '../api';
 </script>
 
 {#if $Inventory}
