@@ -116,6 +116,7 @@
 
   .nav-container {
     top: 0;
+    z-index: 10;
     width: 100%;
     opacity: 98%;
     height: auto;
