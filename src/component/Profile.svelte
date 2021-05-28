@@ -37,11 +37,16 @@
     border-radius: 3px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     text-align: center;
   }
 
   a {
     color: #eee;
+  }
+
+  .content > * {
+    margin: 0.5rem;
   }
 
   a,
