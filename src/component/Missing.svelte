@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Node } from "../anilist";
-  import { Inventory } from "../api";
   import type { Waifu } from "../api";
+  import { Inventory } from "../api";
   import Compare from "./Compare.svelte";
 
   export let missing: Node[] = [];
@@ -9,7 +9,7 @@
   export let CompareChars: Waifu[] = [];
 
   $: really_missing = missing.filter(
-    (w) => !$Inventory.Waifus.some((x) => x.ID == w.id)
+    (w) => !$Inventory.waifus.some((x) => x.id == w.id)
   );
 </script>
 
@@ -25,7 +25,7 @@
       </a>
       <p>{w.id}</p>
       {#if CompareChars}
-        <Compare compare="{CompareChars.some((x) => x.ID === w.id)}">
+        <Compare compare="{CompareChars.some((x) => x.id === w.id)}">
           <div class="overlay-wrapper">
             <div class="img-overlay"></div>
             <img src="{w.image.large}" alt="{w.name.full}" />

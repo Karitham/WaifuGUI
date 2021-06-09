@@ -1,29 +1,29 @@
 <script lang="ts">
-  import {Inventory} from '../api';
+  import { Inventory } from "../api";
 </script>
 
 {#if $Inventory}
   <div class="content">
-    <h3>User {$Inventory.ID}</h3>
-    {#if $Inventory.Favorite}
+    <h3>User {$Inventory.id}</h3>
+    {#if $Inventory.favorite}
       <h4>Favorite Character</h4>
       <div class="waifu-card">
         <a
-          href="{'https://anilist.co/character/' + $Inventory.Favorite.ID}"
+          href="{'https://anilist.co/character/' + $Inventory.favorite.id}"
           title="view on anilist">
           <h5>
-            {$Inventory.Favorite.Name}
+            {$Inventory.favorite.name}
           </h5>
         </a>
-        <p>{$Inventory.Favorite.ID}</p>
+        <p>{$Inventory.favorite.id}</p>
         <img
-          src="{$Inventory.Favorite.Image}"
-          alt="{$Inventory.Favorite.Name}" />
+          src="{$Inventory.favorite.image}"
+          alt="{$Inventory.favorite.name}" />
       </div>
     {/if}
     <div class="description">
       <p>
-        {$Inventory.Quote}
+        {$Inventory.quote}
       </p>
     </div>
   </div>

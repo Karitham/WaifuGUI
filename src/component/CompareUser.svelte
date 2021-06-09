@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { User } from "../api";
   import type { Waifu } from "../api";
+  import { User } from "../api";
   $: user = "";
 
   export let CompareChars: Waifu[] = [];
@@ -26,7 +26,7 @@
 <style>
   .container {
     display: grid;
-    grid-template-columns: 0.2fr 1fr 0.2fr 0.1fr;
+    grid-template-columns: 7ch 1fr 7ch 3ch;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;

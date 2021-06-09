@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { SearchMedia } from "../anilist";
-  import type { Waifu } from "../api";
   import type { Node, QueryResponse } from "../anilist";
+  import { searchMedia } from "../anilist";
+  import type { Waifu } from "../api";
 
   export let media_chars: Node[];
   export let search_text = "";
@@ -16,12 +16,12 @@
   $: filter = (w: Waifu) => {
     if (!media) return true;
 
-    return media.data.Media.characters.nodes.find((i) => i.id == w.ID) != null;
+    return media.data.Media.characters.nodes.find((i) => i.id == w.id) != null;
   };
 
   async function LookupMedia(search: string) {
     if (search_text.length < 2) return;
-    media = await SearchMedia(search);
+    media = await searchMedia(search);
   }
 </script>
 
@@ -47,7 +47,7 @@
 <style>
   .container {
     display: grid;
-    grid-template-columns: 0.2fr 1fr 0.2fr 0.1fr;
+    grid-template-columns: 7ch 1fr 7ch 3ch;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;
@@ -57,7 +57,6 @@
     color: #e4634d;
     font-weight: 600;
     font-size: 18px;
-    width: max-content;
   }
 
   input {

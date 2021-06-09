@@ -1,15 +1,14 @@
 <script lang="ts">
   import type { Node } from "../anilist";
-  import { push } from "svelte-spa-router";
-  import { Inventory, User } from "../api";
   import type { Waifu } from "../api";
-  import FilterChar from "../component/FilterChar.svelte";
-  import FilterMedia from "../component/FilterMedia.svelte";
-  import Profile from "../component/Profile.svelte";
-  import Missing from "../component/Missing.svelte";
+  import { Inventory } from "../api";
   import Compare from "../component/Compare.svelte";
   import CompareUser from "../component/CompareUser.svelte";
   import DropDown from "../component/DropDown.svelte";
+  import FilterChar from "../component/FilterChar.svelte";
+  import FilterMedia from "../component/FilterMedia.svelte";
+  import Missing from "../component/Missing.svelte";
+  import Profile from "../component/Profile.svelte";
 
   export let params: { user: string };
 
@@ -80,19 +79,19 @@
         {#each i.filter((w) => filter_all(w)).splice(0, 200) as w}
           <div class="waifu-card">
             <a
-              href="{'https://anilist.co/character/' + w.ID}"
+              href="{'https://anilist.co/character/' + w.id}"
               title="view on anilist">
               <h4>
-                {w.Name}
+                {w.name}
               </h4>
             </a>
-            <p>{w.ID}</p>
+            <p>{w.id}</p>
             {#if compare_chars !== undefined}
-              <Compare compare="{compare_chars.some((x) => x.ID === w.ID)}">
-                <img src="{w.Image}" alt="{w.Name}" />
+              <Compare compare="{compare_chars.some((x) => x.id === w.id)}">
+                <img src="{w.image}" alt="{w.name}" />
               </Compare>
             {:else}
-              <img src="{w.Image}" alt="{w.Name}" />
+              <img src="{w.image}" alt="{w.name}" />
             {/if}
           </div>
         {/each}
@@ -154,10 +153,11 @@
   .nav {
     padding: 0 0.5rem;
     display: grid;
-    grid-template-columns: 0.3fr 1fr 0.7fr 1fr;
+    grid-template-columns: 0.1fr 1fr 0.7fr 1fr;
     justify-content: center;
     text-align: center;
     align-items: center;
+    gap: 0.7rem;
   }
 
   .nav > button {
@@ -225,6 +225,7 @@
   @media screen and (max-width: 1050px) {
     .nav {
       grid-template-columns: 1fr;
+      gap: 0;
       grid-template-rows: auto auto auto auto;
     }
 

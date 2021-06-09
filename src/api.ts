@@ -1,24 +1,23 @@
+/* eslint-disable require-jsdoc */
 import {pop} from 'svelte-spa-router';
 import {writable, Writable} from 'svelte/store';
 
 export class User {
-  ID: string;
-  Date: Date;
-  Favorite: Waifu;
-  Quote: string;
-  Waifus: Waifu[];
+  id: string;
+  favorite: Waifu;
+  quote: string;
+  waifus: Waifu[];
 
   public async pullInventory(user: string): Promise<Waifu[]> {
-    const resp = await fetch('https://waifubot.kar.wtf/user/' + user);
+    const resp = await fetch('https://waifuapi.kar.moe/user/' + user);
     try {
       const payload = (await resp.json()) as User;
-      this.Date = payload.Date;
-      this.Favorite = payload.Favorite;
-      this.ID = payload.ID;
-      this.Quote = payload.Quote;
-      this.Waifus = payload.Waifus;
+      this.favorite = payload.favorite;
+      this.id = payload.id;
+      this.quote = payload.quote;
+      this.waifus = payload.waifus;
 
-      return this.Waifus;
+      return this.waifus;
     } catch (e) {
       alert(e);
       pop();
@@ -27,9 +26,11 @@ export class User {
 }
 
 export interface Waifu {
-  ID: number;
-  Image: string;
-  Name: string;
+  id: number;
+  image: string;
+  name: string;
+  date: Date;
+  type: string;
 }
 
 export const Inventory: Writable<User> = writable(new User());

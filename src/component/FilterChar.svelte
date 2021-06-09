@@ -18,7 +18,7 @@
 </script>
 
 <div class="container">
-  <label for="name"> Name </label>
+  <label for="name">Name</label>
   <input
     type="text"
     placeholder="name to search..."
@@ -28,7 +28,7 @@
 <style>
   .container {
     display: grid;
-    grid-template-columns: 0.3fr 2fr;
+    grid-template-columns: 7ch 1fr;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;

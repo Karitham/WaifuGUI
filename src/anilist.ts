@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 const CharacterQuery = `query ($term: String, $page: Int) {
   Media(search: $term) {
     title {
@@ -21,7 +22,7 @@ const CharacterQuery = `query ($term: String, $page: Int) {
   }
 }`;
 
-export async function SearchMedia(
+export async function searchMedia(
     media: string,
     page: number = 1,
 ): Promise<QueryResponse> {
@@ -43,7 +44,7 @@ export async function SearchMedia(
     const response = (await resp.json()) as QueryResponse;
 
     if (response.data.Media.characters.pageInfo.hasNextPage) {
-      const resp2 = await SearchMedia(media, page + 1);
+      const resp2 = await searchMedia(media, page + 1);
       response.data.Media.characters.nodes.push(
           ...resp2.data.Media.characters.nodes,
       );
