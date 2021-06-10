@@ -22,6 +22,8 @@
 
   let dropDown = false;
   $: dropDown;
+  let show_all = false;
+  $: cut = (w: Waifu[]): Waifu[] => (show_all ? w : w.splice(0, 200));
 </script>
 
 <svelte:head>
@@ -42,8 +44,10 @@
   {#await $Inventory.pullInventory(params.user) then i}
     <div class="nav-container small">
       <div class="nav" id="nav">
-        <a class="back-btn" href="/"><img src="/favicon.png" alt="icon" /></a>
-        <button on:click="{() => (dropDown = !dropDown)}">v</button>
+        <a class="back-btn" href="/">
+          <img src="/favicon.png" alt="icon" />
+        </a>
+        <button class="btn" on:click="{() => (dropDown = !dropDown)}">v</button>
         <DropDown showDropDown="{dropDown}">
           <div class="search-prop-small">
             <FilterChar bind:filter="{filters[0]}" />
@@ -73,10 +77,19 @@
     </div>
     <div class="container-wrapper">
       <div class="container">
+        <div class="first-row">
+          <div class="show-all">
+            <button
+              class="btn show-all-btn"
+              on:click="{() => (show_all = !show_all)}">
+              Show all
+            </button>
+          </div>
+        </div>
         <div class="left" id="profile">
           <Profile />
         </div>
-        {#each i.filter((w) => filter_all(w)).splice(0, 200) as w}
+        {#each cut(i.filter((w) => filter_all(w))) as w}
           <div class="waifu-card">
             <a
               href="{'https://anilist.co/character/' + w.id}"
@@ -103,13 +116,17 @@
 </main>
 
 <style>
+  .container-wrapper {
+    padding-top: 3.5rem;
+  }
+
   main {
     color: #eee;
   }
 
   #profile {
     grid-column: -3 / -1;
-    grid-row: span 3;
+    grid-row: 2 / span 3;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -160,26 +177,38 @@
     gap: 0.7rem;
   }
 
+  .btn {
+    border: none;
+    background-color: #e4634d;
+    color: #eee;
+    padding: 0.5rem;
+  }
+
   .nav > button {
+    padding: 0;
+    height: 1.5rem;
+    width: 1.5rem;
     position: absolute;
     top: 1rem;
     right: 1rem;
-    border: none;
-    height: 1.5rem;
-    width: 1.5rem;
-    background-color: #e4634d;
-    color: #eee;
+  }
+
+  .first-row {
+    grid-column: 1 / -1;
+    background-color: hsl(0, 0%, 20%);
+    padding: 0.7rem;
+    display: grid;
+    justify-content: end;
+    border-radius: 5px;
   }
 
   .container {
     margin: auto;
     padding: 1rem;
-    padding-top: 5rem;
     max-width: 70rem;
     display: grid;
     grid-auto-flow: dense;
     grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(3rem, 1fr));
     gap: 1rem;
   }
 
@@ -222,7 +251,7 @@
     display: none;
   }
 
-  @media screen and (max-width: 1050px) {
+  @media screen and (max-width: 1150px) {
     .nav {
       grid-template-columns: 1fr;
       gap: 0;
