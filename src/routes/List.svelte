@@ -214,6 +214,7 @@
 
   .waifu-card {
     background-color: hsl(0, 0%, 16%);
+    max-height: 100%;
 
     text-align: center;
     border-radius: 3px;
