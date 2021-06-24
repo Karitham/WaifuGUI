@@ -10,6 +10,8 @@
       <div class="waifu-card">
         <a
           href="{'https://anilist.co/character/' + $Inventory.favorite.id}"
+          target="_blank"
+          rel="noopener noreferrer"
           title="view on anilist">
           <h5>
             {$Inventory.favorite.name}

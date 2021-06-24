@@ -94,6 +94,8 @@
           <div class="waifu-card">
             <a
               href="{'https://anilist.co/character/' + w.id}"
+              target="_blank"
+              rel="noopener noreferrer"
               title="view on anilist">
               <h4>
                 {w.name}
