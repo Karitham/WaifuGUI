@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { push } from "svelte-spa-router";
   import type { Node } from "../anilist";
   import type { Waifu } from "../api";
   import { Inventory } from "../api";
@@ -112,6 +113,9 @@
         <h4 class="search-more">Search to list more...</h4>
       </div>
     </div>
+  {:catch e}
+    {alert(e)}
+    {push("/")}
   {/await}
 </main>
 

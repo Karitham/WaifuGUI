@@ -4,12 +4,15 @@ import {writable, Writable} from 'svelte/store';
 
 export class User {
   id: string;
-  favorite: Waifu;
+  favorite?: Waifu;
   quote: string;
   waifus: Waifu[];
 
   public async pullInventory(user: string): Promise<Waifu[]> {
     const resp = await fetch('https://waifuapi.kar.moe/user/' + user);
+    if (resp.status !== 200) {
+      throw new Error('User not found');
+    }
     try {
       const payload = (await resp.json()) as User;
       this.favorite = payload.favorite;

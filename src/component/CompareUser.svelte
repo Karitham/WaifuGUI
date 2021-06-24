@@ -7,7 +7,12 @@
 
   async function LookupUser(user: string) {
     let u = new User();
-    CompareChars = await u.pullInventory(user);
+    try {
+      CompareChars = await u.pullInventory(user);
+    } catch (e) {
+      console.error(e);
+      alert("user not found");
+    }
   }
 </script>
 
