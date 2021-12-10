@@ -23,8 +23,8 @@ const CharacterQuery = `query ($term: String, $page: Int) {
 }`;
 
 export async function searchMedia(
-    media: string,
-    page: number = 1,
+  media: string,
+  page: number = 1,
 ): Promise<QueryResponse> {
   const resp = await fetch('https://graphql.anilist.co', {
     method: 'POST',
@@ -40,19 +40,20 @@ export async function searchMedia(
     }),
   });
 
-  if (resp.status == 200) {
-    const response = (await resp.json()) as QueryResponse;
-
-    if (response.data.Media.characters.pageInfo.hasNextPage) {
-      const resp2 = await searchMedia(media, page + 1);
-      response.data.Media.characters.nodes.push(
-          ...resp2.data.Media.characters.nodes,
-      );
-    }
-    return response;
+  if (resp.status != 200) {
+    console.error(resp.statusText);
+    return;
   }
+  const response = (await resp.json()) as QueryResponse;
 
-  console.error(resp.statusText);
+  if (response.data.Media.characters.pageInfo.hasNextPage) {
+    const resp2 = await searchMedia(media, page + 1);
+    response.data.Media.characters.nodes.push(
+      ...resp2.data.Media.characters.nodes,
+    );
+  }
+  return response;
+
 }
 
 export interface QueryResponse {

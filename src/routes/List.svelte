@@ -5,7 +5,6 @@
   import { Inventory } from "../api";
   import Compare from "../component/Compare.svelte";
   import CompareUser from "../component/CompareUser.svelte";
-  import DropDown from "../component/DropDown.svelte";
   import FilterChar from "../component/FilterChar.svelte";
   import FilterMedia from "../component/FilterMedia.svelte";
   import Missing from "../component/Missing.svelte";
@@ -21,8 +20,7 @@
   let media_chars: Node[];
   let compare_chars: Waifu[] = [];
 
-  let dropDown = false;
-  $: dropDown;
+  $: dropDown = window.innerWidth > 768;
   let show_all = false;
   $: cut = (w: Waifu[]): Waifu[] => (show_all ? w : w.splice(0, 200));
 </script>
@@ -31,246 +29,90 @@
   <meta property="og:type" content="WaifuGUI" />
   <meta
     property="og:url"
-    content="{'https://waifugui.kar.moe/#/list/' + params.user}" />
+    content={"https://waifugui.kar.moe/#/list/" + params.user}
+  />
   <meta
     property="og:title"
-    content="{`WaifuGUI | Check out ${params.user}'s list`}" />
+    content={`WaifuGUI | Check out ${params.user}'s list`}
+  />
   <meta
     property="og:description"
-    content="{`View ${params.user}'s list online`}" />
+    content={`View ${params.user}'s list online`}
+  />
   <meta property="og:image" content="https://waifugui.kar.moe/favicon.png" />
 </svelte:head>
 
-<main>
+<main class="bg-neutral-800 max-h-full h-full min-h-screen text-orange-50">
   {#await $Inventory.pullInventory(params.user) then i}
-    <div class="nav-container small">
-      <div class="nav" id="nav">
-        <a class="back-btn" href="/">
-          <img src="/favicon.png" alt="icon" />
-        </a>
-        <button class="btn" on:click="{() => (dropDown = !dropDown)}">v</button>
-        <DropDown showDropDown="{dropDown}">
-          <div class="search-prop-small">
-            <FilterChar bind:filter="{filters[0]}" />
-          </div>
-          <div class="search-prop-small">
-            <CompareUser bind:CompareChars="{compare_chars}" />
-          </div>
-          <div class="search-prop-small">
-            <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
-          </div>
-        </DropDown>
-      </div>
+    <!-- nav -->
+    <div
+      class="bg-orange-300 text-black py-2 flex flex-row flex-grow content-center fixed w-full z-10 shadow-sm shadow-neutral-900"
+    >
+      <a class="block w-12 justify-center content-center mx-3" href="/">
+        <img src="/favicon.png" alt="icon" class="w-10 p-1 rounded-full" />
+      </a>
+      {#if dropDown}
+        <div class="grid grid-flow-col gap-5 justify-center w-full">
+          <FilterChar bind:filter={filters[0]} />
+          <FilterMedia bind:filter={filters[1]} bind:media_chars />
+          <CompareUser bind:CompareChars={compare_chars} />
+        </div>
+        <input
+          type="button"
+          class="p-2 mx-3 rounded-md border-2 border-gray-700 hover:border-orange-500 focus:border-orange-500 text-black"
+          on:click={() => (show_all = !show_all)}
+          value={show_all ? "Show Less" : "Show All"}
+        />
+      {/if}
     </div>
-    <div class="nav-container big">
-      <div class="nav" id="nav">
-        <a class="back-btn" href="/"><img src="/favicon.png" alt="icon" /></a>
-        <div class="search-prop">
-          <FilterChar bind:filter="{filters[0]}" />
-        </div>
-        <div class="search-prop">
-          <CompareUser bind:CompareChars="{compare_chars}" />
-        </div>
-        <div class="search-prop">
-          <FilterMedia bind:filter="{filters[1]}" bind:media_chars />
+
+    <!-- body -->
+    <div class="pt-20 justify-center items-center">
+      <!-- profile -->
+      <div class="block mx-auto max-w-lg" id="profile">
+        <Profile />
+      </div>
+      <!-- characters -->
+      <div
+        class="mx-auto flex flex-col justify-center items-center pb-12 w-full max-w-7xl"
+      >
+        <h3 class="text-3xl text-center py-7 text-orange-200">
+          Acquired characters
+        </h3>
+        <div
+          class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-center"
+        >
+          {#each cut(i.filter((w) => filter_all(w))) as w}
+            <div
+              class="shadow-zinc-900 shadow-md w-full bg-zinc-900 rounded-lg sahdow-lg overflow-hidden flex flex-col justify-center items-center"
+            >
+              <div class="flex-auto">
+                <Compare compare={compare_chars.some((x) => x.id === w.id)}>
+                  <img
+                    src={w.image}
+                    alt={w.name}
+                    class="object-top object-cover w-full"
+                  />
+                </Compare>
+              </div>
+              <div class="text-center py-8 sm:py-6 px-3">
+                <a
+                  href={"https://anilist.co/character/" + w.id}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p class="text-xl text-gray-200 font-bold mb-2">{w.name}</p>
+                </a>
+                <p class="text-base text-gray-400 font-normal">{w.id}</p>
+              </div>
+            </div>
+          {/each}
         </div>
       </div>
-    </div>
-    <div class="container-wrapper">
-      <div class="container">
-        <div class="first-row">
-          <div class="show-all">
-            <button
-              class="btn show-all-btn"
-              on:click="{() => (show_all = !show_all)}">
-              Show all
-            </button>
-          </div>
-        </div>
-        <div class="left" id="profile">
-          <Profile />
-        </div>
-        {#each cut(i.filter((w) => filter_all(w))) as w}
-          <div class="waifu-card">
-            <a
-              href="{'https://anilist.co/character/' + w.id}"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="view on anilist">
-              <h4>
-                {w.name}
-              </h4>
-            </a>
-            <p>{w.id}</p>
-            {#if compare_chars !== undefined}
-              <Compare compare="{compare_chars.some((x) => x.id === w.id)}">
-                <img src="{w.image}" alt="{w.name}" />
-              </Compare>
-            {:else}
-              <img src="{w.image}" alt="{w.name}" />
-            {/if}
-          </div>
-        {/each}
-        <Missing missing="{media_chars}" bind:CompareChars="{compare_chars}" />
-        <h4 class="search-more">Search to list more...</h4>
-      </div>
+      <Missing missing={media_chars} bind:CompareChars={compare_chars} />
     </div>
   {:catch e}
     {alert(e)}
     {push("/")}
   {/await}
 </main>
-
-<style>
-  .container-wrapper {
-    padding-top: 3.5rem;
-  }
-
-  main {
-    color: #eee;
-  }
-
-  #profile {
-    grid-column: -3 / -1;
-    grid-row: 2 / span 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #nav {
-    z-index: 10;
-  }
-
-  h4,
-  p {
-    margin: 0.5rem;
-  }
-
-  a {
-    color: #eee;
-    width: fit-content;
-  }
-
-  .search-prop-small {
-    padding: 0.5rem 0;
-    padding-bottom: 1rem;
-  }
-
-  .search-more {
-    padding: 1.5rem;
-    text-align: center;
-    grid-column: 1 / -1;
-  }
-
-  .nav-container {
-    top: 0;
-    z-index: 10;
-    width: 100%;
-    opacity: 98%;
-    height: auto;
-    background-color: hsl(0, 0%, 19%);
-    position: fixed;
-  }
-
-  .nav {
-    padding: 0 0.5rem;
-    display: grid;
-    grid-template-columns: 0.1fr 1fr 0.7fr 1fr;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    gap: 0.7rem;
-  }
-
-  .btn {
-    border: none;
-    background-color: #e4634d;
-    color: #eee;
-    padding: 0.5rem;
-  }
-
-  .nav > button {
-    padding: 0;
-    height: 1.5rem;
-    width: 1.5rem;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
-
-  .first-row {
-    grid-column: 1 / -1;
-    background-color: hsl(0, 0%, 20%);
-    padding: 0.7rem;
-    display: grid;
-    justify-content: end;
-    border-radius: 5px;
-  }
-
-  .container {
-    margin: auto;
-    padding: 1rem;
-    max-width: 70rem;
-    display: grid;
-    grid-auto-flow: dense;
-    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-    gap: 1rem;
-  }
-
-  .waifu-card {
-    background-color: hsl(0, 0%, 16%);
-    max-height: 100%;
-
-    text-align: center;
-    border-radius: 3px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
-  }
-
-  img {
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
-  }
-
-  a > img {
-    height: 2.5rem;
-    width: 2.5rem;
-    object-fit: cover;
-    border-radius: 100%;
-    padding: 0.5rem;
-  }
-
-  a {
-    display: flex;
-    justify-content: center;
-  }
-
-  .big {
-    display: block;
-  }
-  .small {
-    display: none;
-  }
-
-  @media screen and (max-width: 1150px) {
-    .nav {
-      grid-template-columns: 1fr;
-      gap: 0;
-      grid-template-rows: auto auto auto auto;
-    }
-
-    .big {
-      display: none;
-    }
-
-    .small {
-      display: block;
-    }
-  }
-</style>

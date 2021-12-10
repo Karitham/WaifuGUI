@@ -13,75 +13,37 @@
   );
 </script>
 
-{#if really_missing}
-  {#each really_missing as w}
-    <div class="waifu-card">
-      <a
-        href="{'https://anilist.co/character/' + w.id}"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="view on anilist">
-        <h4>
-          {w.name.full}
-        </h4>
-      </a>
-      <p>{w.id}</p>
-      {#if CompareChars}
-        <Compare compare="{CompareChars.some((x) => x.id === w.id)}">
-          <div class="overlay-wrapper">
-            <div class="img-overlay"></div>
-            <img src="{w.image.large}" alt="{w.name.full}" />
+{#if really_missing && really_missing.length > 0}
+  <div class="flex flex-col justify-center items-center pb-12 w-full">
+    <h3 class="text-3xl text-center py-7 text-orange-300">Non-Acquired</h3>
+    <div
+      class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-center"
+    >
+      {#each really_missing as w}
+        <div
+          class="shadow-zinc-900 shadow-md w-full bg-zinc-900 rounded-lg sahdow-lg overflow-hidden flex flex-col justify-center items-center"
+        >
+          <div class="flex-auto">
+            <Compare compare={CompareChars.some((x) => x.id === w.id)}>
+              <img
+                src={w.image.large}
+                alt={w.name.full}
+                class="object-top object-cover w-full"
+              />
+            </Compare>
           </div>
-        </Compare>
-      {:else}
-        <div class="overlay-wrapper">
-          <div class="img-overlay"></div>
-          <img src="{w.image.large}" alt="{w.name.full}" />
+          <div class="text-center py-8 sm:py-6">
+            <a
+              href={"https://anilist.co/character/" + w.id}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <p class="text-xl text-gray-200 font-bold mb-2">{w.name.full}</p>
+            </a>
+            <p class="text-base text-gray-400 font-normal">{w.id}</p>
+          </div>
         </div>
-      {/if}
+      {/each}
     </div>
-  {/each}
+  </div>
 {/if}
-
-<style>
-  h4,
-  p {
-    margin: 0.5rem;
-  }
-
-  a {
-    color: #ddd;
-  }
-
-  .waifu-card {
-    background-color: hsl(0, 0%, 14%);
-    text-align: center;
-    border-radius: 3px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
-  }
-
-  img {
-    object-fit: cover;
-    width: 100px;
-    height: 150px;
-  }
-
-  .img-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(56, 56, 56, 0.6);
-  }
-
-  .overlay-wrapper {
-    position: relative;
-    width: 100px;
-    height: 150px;
-  }
-</style>

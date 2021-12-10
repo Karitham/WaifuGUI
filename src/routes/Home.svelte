@@ -1,58 +1,45 @@
 <script lang="ts">
   import { push } from "svelte-spa-router";
+
   $: user = "";
+  function pushToSearch() {
+    if (user.length < 15) {
+      console.log(user.length);
+      alert("invalid user ID");
+      return;
+    }
+    push("/list/" + user);
+  }
 </script>
 
-<main>
-  <div class="content">
-    <h1>Welcome to WaifuGUI</h1>
-    <img src="./favicon.png" alt="icon" />
-    <span> Enter a discord user ID to view the user's list </span>
-    <input type="text" bind:value="{user}" placeholder="206794847581896705" />
-    <button
-      on:click="{() => {
-        if (user.length < 15) {
-          console.log(user.length);
-          alert('invalid user ID');
-          return;
-        }
-        push('/list/' + user);
-      }}">Search</button>
+<main class="bg-zinc-800 h-screen w-screen selection:bg-zinc-700">
+  <div class="h-fullcontainer place-content-center text-white">
+    <div>
+      <h1 class="text-5xl p-8 text-center text-orange-400">WaifuGUI</h1>
+    </div>
+    <div>
+      <img
+        src="./favicon.png"
+        alt="icon"
+        class="m-auto rounded-md shadow-md shadow-gray-900"
+      />
+    </div>
+    <div class="p-8 flex columns-2 justify-center items-center">
+      <input
+        class="bg-inherit border-2 border-gray-600 rounded-md p-2 w-64"
+        type="text"
+        name="user-input"
+        alt="user-input"
+        label="Enter a discord user ID to view the user's list"
+        bind:value={user}
+        placeholder="206794847581896705"
+      />
+      <input
+        type="button"
+        value="Search"
+        on:click={pushToSearch}
+        class="ml-2 p-2 rounded-md bg-orange-600 hover:bg-orange-500 text-white w-20"
+      />
+    </div>
   </div>
 </main>
-
-<style>
-  main {
-    width: 100%;
-    height: 100%;
-  }
-  .content {
-    color: #eee;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-  }
-  span {
-    padding: 1rem;
-  }
-  h1 {
-    text-align: center;
-    font-size: 7ch;
-    color: #e4634d;
-  }
-  input {
-    padding: 0.5rem;
-    color: #eee;
-    margin: 1rem;
-    border-style: none;
-    background-color: #494949;
-  }
-  button {
-    border: none;
-    background-color: #e4634d;
-    padding: 0.5rem;
-    color: #eee;
-  }
-</style>

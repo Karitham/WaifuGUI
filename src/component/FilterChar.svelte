@@ -17,33 +17,23 @@
   };
 </script>
 
-<div class="container">
-  <label for="name">Name</label>
+<form
+  action=""
+  class="flex justify-center bg-inherit rounded-xl border-2 border-zinc-600 overflow-hidden"
+>
   <input
-    type="text"
-    placeholder="name to search..."
-    bind:value="{search_text}" />
-</div>
-
-<style>
-  .container {
-    display: grid;
-    grid-template-columns: 7ch 1fr;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.5rem;
-  }
-
-  label {
-    color: #e4634d;
-    font-weight: 600;
-    font-size: 18px;
-  }
-
-  input {
-    padding: 0.4rem;
-    color: #eee;
-    border-style: none;
-    background-color: #494949;
-  }
-</style>
+    type="search"
+    label="Character"
+    placeholder="Filter characters..."
+    bind:value={search_text}
+    on:keypress={(e) => {
+      if (e.key == "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+      }
+    }}
+    class="block text-black rounded-md border-0 focus:outline-none focus:ring-0 focus:border-blue-500 flex-grow p-2 bg-inherit placeholder:text-zinc-700"
+  />
+</form>
