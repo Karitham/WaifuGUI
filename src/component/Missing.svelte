@@ -2,11 +2,10 @@
   import type { Node } from "../anilist";
   import type { Waifu } from "../api";
   import { Inventory } from "../api";
-  import Compare from "./Compare.svelte";
 
   export let missing: Node[] = [];
   let really_missing: Node[] = [];
-  export let CompareChars: Waifu[] = [];
+  export let compareChars: Waifu[] = [];
 
   $: really_missing = missing.filter(
     (w) => !$Inventory.waifus.some((x) => x.id == w.id)
@@ -24,13 +23,14 @@
           class="shadow-zinc-900 shadow-md w-full bg-zinc-900 rounded-lg sahdow-lg overflow-hidden flex flex-col justify-center items-center"
         >
           <div class="flex-auto">
-            <Compare compare={CompareChars.some((x) => x.id === w.id)}>
-              <img
-                src={w.image.large}
-                alt={w.name.full}
-                class="object-top object-cover w-full"
-              />
-            </Compare>
+            <img
+              src={w.image.large}
+              alt={w.name.full}
+              class="object-top object-cover w-full rounded-lg"
+              style={compareChars.some((x) => x.id === w.id)
+                ? "border: 2px solid #f6ad55;"
+                : ""}
+            />
           </div>
           <div class="text-center py-8 sm:py-6">
             <a
@@ -38,7 +38,9 @@
               target="_blank"
               rel="noopener noreferrer"
             >
-              <p class="text-xl text-gray-200 font-bold mb-2">{w.name.full}</p>
+              <p class="text-xl text-gray-200 font-bold mb-2">
+                {w.name.full}
+              </p>
             </a>
             <p class="text-base text-gray-400 font-normal">{w.id}</p>
           </div>

@@ -3,7 +3,6 @@
   import type { Node } from "../anilist";
   import type { Waifu } from "../api";
   import { Inventory } from "../api";
-  import Compare from "../component/Compare.svelte";
   import CompareUser from "../component/CompareUser.svelte";
   import FilterChar from "../component/FilterChar.svelte";
   import FilterMedia from "../component/FilterMedia.svelte";
@@ -18,12 +17,12 @@
     return filters.map((f) => f(w)).every((v) => v != false);
   };
 
-  let media_chars: Node[];
-  let compare_chars: Waifu[] = [];
+  let mediaChars: Node[];
+  let compareChars: Waifu[] = [];
 
   $: dropDown = window.innerWidth > 768;
-  let show_all = false;
-  $: cut = (w: Waifu[]): Waifu[] => (show_all ? w : w.splice(0, 200));
+  let showAll = false;
+  $: cut = (w: Waifu[]): Waifu[] => (showAll ? w : w.splice(0, 200));
 
   let sorters: {
     id: number;
@@ -69,8 +68,8 @@
       {#if dropDown}
         <div class="grid grid-flow-col gap-3 justify-center w-full">
           <FilterChar bind:filter={filters[0]} />
-          <FilterMedia bind:filter={filters[1]} bind:media_chars />
-          <CompareUser bind:CompareChars={compare_chars} />
+          <FilterMedia bind:filter={filters[1]} bind:media_chars={mediaChars} />
+          <CompareUser bind:CompareChars={compareChars} />
           <select
             name="filtering"
             bind:value={sortSelected}
@@ -88,8 +87,8 @@
         <input
           type="button"
           class="p-2 mx-3 rounded-md border-2 border-gray-700 hover:border-orange-500 focus:border-orange-500 text-black"
-          on:click={() => (show_all = !show_all)}
-          value={show_all ? "Show Less" : "Show All"}
+          on:click={() => (showAll = !showAll)}
+          value={showAll ? "Show Less" : "Show All"}
         />
       {/if}
     </div>
@@ -104,40 +103,43 @@
       <div
         class="mx-auto flex flex-col justify-center items-center pb-12 w-full max-w-7xl"
       >
-        <h3 class="text-3xl text-center py-7 text-orange-200">
-          Acquired characters
-        </h3>
-        <div
-          class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-center"
-        >
-          {#each cut(i.filter((w) => filter_all(w)).sort(sorter)) as w}
-            <div
-              class="shadow-zinc-900 shadow-md w-full bg-zinc-900 rounded-lg sahdow-lg overflow-hidden flex flex-col justify-center items-center"
-            >
-              <div class="flex-auto">
-                <Compare compare={compare_chars.some((x) => x.id === w.id)}>
+        {#if i.length > 0}
+          <h3 class="text-3xl text-center py-7 text-orange-200">
+            Acquired characters
+          </h3>
+          <div
+            class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-center"
+          >
+            {#each cut(i.filter((w) => filter_all(w)).sort(sorter)) as w}
+              <div
+                class="shadow-zinc-900 shadow-md w-full bg-zinc-900 rounded-lg sahdow-lg overflow-hidden flex flex-col justify-center items-center"
+              >
+                <div class="flex-auto">
                   <img
                     src={w.image}
                     alt={w.name}
-                    class="object-top object-cover w-full"
+                    class="object-top object-cover rounded-lg w-max max-h-48"
+                    style={compareChars.some((x) => x.id === w.id)
+                      ? "border: 2px solid #f6ad55;"
+                      : ""}
                   />
-                </Compare>
+                </div>
+                <div class="text-center py-8 sm:py-6 px-3">
+                  <a
+                    href={"https://anilist.co/character/" + w.id}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <p class="text-xl text-gray-200 font-bold mb-2">{w.name}</p>
+                  </a>
+                  <p class="text-base text-gray-400 font-normal">{w.id}</p>
+                </div>
               </div>
-              <div class="text-center py-8 sm:py-6 px-3">
-                <a
-                  href={"https://anilist.co/character/" + w.id}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <p class="text-xl text-gray-200 font-bold mb-2">{w.name}</p>
-                </a>
-                <p class="text-base text-gray-400 font-normal">{w.id}</p>
-              </div>
-            </div>
-          {/each}
-        </div>
+            {/each}
+          </div>
+        {/if}
       </div>
-      <Missing missing={media_chars} bind:CompareChars={compare_chars} />
+      <Missing missing={mediaChars} bind:compareChars />
     </div>
   {:catch e}
     {alert(e)}
