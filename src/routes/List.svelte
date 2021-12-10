@@ -61,7 +61,7 @@
   {#await $Inventory.pullInventory(params.user) then i}
     <!-- nav -->
     <div
-      class="bg-orange-300 text-black py-2 flex flex-row flex-grow content-center fixed w-full z-10 shadow-sm shadow-neutral-900"
+      class="bg-orange-100 text-black py-2 flex flex-row flex-grow content-center fixed w-full z-10 shadow-sm shadow-neutral-900"
     >
       <a class="block w-12 justify-center content-center mx-3" href="/">
         <img src="/favicon.png" alt="icon" class="w-10 p-1 rounded-full" />
@@ -79,7 +79,7 @@
             {#each sorters as s}
               <option
                 value={s.id}
-                class="bg-orange-300 text-black focus:bg-orange-500 focus:outline-none rounded-md"
+                class="bg-orange-100 text-black focus:bg-orange-500 focus:outline-none rounded-md"
                 >{s.text}</option
               >
             {/each}
