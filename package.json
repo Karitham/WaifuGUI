@@ -10,7 +10,7 @@
     "serve": "serve public -p 80",
     "dev": "concurrently \"rollup -c -w\" \"npx tailwindcss -o ./public/index.css --watch\"",
     "validate": "svelte-check",
-    "deploy": "npx gh-pages -d public/"
+    "deploy": "npm run build && npx gh-pages -d public/"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",

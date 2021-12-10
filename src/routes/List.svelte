@@ -9,6 +9,7 @@
   import FilterMedia from "../component/FilterMedia.svelte";
   import Missing from "../component/Missing.svelte";
   import Profile from "../component/Profile.svelte";
+  import { DateAsc, DateDesc, IDAsc, IDDesc } from "../sort";
 
   export let params: { user: string };
 
@@ -23,6 +24,20 @@
   $: dropDown = window.innerWidth > 768;
   let show_all = false;
   $: cut = (w: Waifu[]): Waifu[] => (show_all ? w : w.splice(0, 200));
+
+  let sorters: {
+    id: number;
+    text: string;
+    fn: (a: Waifu, b: Waifu) => number;
+  }[] = [
+    { id: 0, text: "DATE", fn: DateAsc },
+    { id: 1, text: "DATE DESC", fn: DateDesc },
+    { id: 2, text: "ID", fn: IDAsc },
+    { id: 3, text: "ID DESC", fn: IDDesc },
+  ];
+  let sorter: (a: Waifu, b: Waifu) => number;
+  let sortSelected = 0;
+  $: sorter = sorters[sortSelected].fn;
 </script>
 
 <svelte:head>
@@ -52,10 +67,23 @@
         <img src="/favicon.png" alt="icon" class="w-10 p-1 rounded-full" />
       </a>
       {#if dropDown}
-        <div class="grid grid-flow-col gap-5 justify-center w-full">
+        <div class="grid grid-flow-col gap-3 justify-center w-full">
           <FilterChar bind:filter={filters[0]} />
           <FilterMedia bind:filter={filters[1]} bind:media_chars />
           <CompareUser bind:CompareChars={compare_chars} />
+          <select
+            name="filtering"
+            bind:value={sortSelected}
+            class=" justify-center bg-inherit rounded-xl border-2 border-zinc-600 overflow-hidden block text-black focus:outline-none focus:ring-0 flex-grow p-2"
+          >
+            {#each sorters as s}
+              <option
+                value={s.id}
+                class="bg-orange-300 text-black focus:bg-orange-500 focus:outline-none rounded-md"
+                >{s.text}</option
+              >
+            {/each}
+          </select>
         </div>
         <input
           type="button"
@@ -82,7 +110,7 @@
         <div
           class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-center"
         >
-          {#each cut(i.filter((w) => filter_all(w))) as w}
+          {#each cut(i.filter((w) => filter_all(w)).sort(sorter)) as w}
             <div
               class="shadow-zinc-900 shadow-md w-full bg-zinc-900 rounded-lg sahdow-lg overflow-hidden flex flex-col justify-center items-center"
             >

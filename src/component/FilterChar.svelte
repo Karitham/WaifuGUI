@@ -34,6 +34,6 @@
         return false;
       }
     }}
-    class="block text-black rounded-md border-0 focus:outline-none focus:ring-0 focus:border-blue-500 flex-grow p-2 bg-inherit placeholder:text-zinc-700"
+    class="block text-black rounded-md border-0 focus:outline-none focus:ring-0  flex-grow p-2 bg-inherit placeholder:text-zinc-700"
   />
 </form>
