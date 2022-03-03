@@ -5,8 +5,8 @@
 
 {#if $Inventory}
   <div class="overflow-hidden flex flex-col justify-center items-center mb-12 ">
-    <h3 class="text-3xl text-orange-200 py-2">User {$Inventory.id}</h3>
-    {#if $Inventory.favorite}
+    <h3 class="text-3xl text-orange-200 py-2">{$Inventory.id}</h3>
+    {#if $Inventory.favorite.image && $Inventory.favorite.name}
       <h4 class="text-xl text-orange-100">Favorite Character</h4>
       <div class="text-center py-8 sm:py-6">
         <img
@@ -30,10 +30,12 @@
         </div>
       </div>
     {/if}
-    <div>
-      <p class="text-md text-center ">
-        {@html marked.parse($Inventory.quote.replaceAll("\n", "\n\n"))}
-      </p>
-    </div>
+    {#if $Inventory.quote}
+      <div>
+        <p class="text-md text-center ">
+          {@html marked.parse($Inventory.quote.replaceAll("\n", "\n\n"))}
+        </p>
+      </div>
+    {/if}
   </div>
 {/if}
