@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
-import {pop} from 'svelte-spa-router';
-import {writable, Writable} from 'svelte/store';
+import { pop } from "svelte-spa-router";
+import { writable, Writable } from "svelte/store";
 
 export class User {
   id: string;
@@ -9,9 +9,9 @@ export class User {
   waifus: Waifu[];
 
   public async pullInventory(user: string): Promise<Waifu[]> {
-    const resp = await fetch('https://waifuapi.kar.moe/user/' + user);
+    const resp = await fetch("https://waifuapi.karitham.dev/user/" + user);
     if (resp.status !== 200) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
     try {
       const payload = (await resp.json()) as User;
